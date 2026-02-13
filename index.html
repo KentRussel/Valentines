@@ -19,14 +19,18 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: 'Montserrat', sans-serif;
-    /* image first, but provide a safe color fallback */
-    background: url('background.jpg') center/cover no-repeat fixed;
-    background-color: #ffeef6; /* fallback if background.jpg fails */
+    /* light brown — crumpled old-paper look (CSS gradient) */
+    background-image: 
+      linear-gradient(135deg, #f6efe6 0%, #ead8c0 40%, #d6bfa0 100%),
+      radial-gradient(circle at 10% 10%, rgba(0,0,0,0.02), transparent 10%),
+      radial-gradient(circle at 90% 80%, rgba(0,0,0,0.02), transparent 10%);
+    background-color: #ead8c0; /* fallback */
+    background-attachment: fixed;
     background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
-} 
+}  
 
 /* Question */
 h1 {
@@ -77,14 +81,15 @@ button {
     display: none;
     position: fixed;
     inset: 0;
-    background: url('pink.jpg') center/cover no-repeat fixed;
-    background-color: #ffd6e0; /* fallback if pink.jpg fails to load */
+    /* replace pink.jpg with the previous pink gradient */
+    background-image: linear-gradient(135deg, #fb6f92 0%, #ff8fab 100%);
+    background-color: #ffd6e0; /* fallback */
     background-size: cover;
     z-index: 1000;
     overflow: hidden;
     justify-content: center;
     align-items: center;
-} 
+}  
 
 #cinematic-bg {
     position: fixed;
@@ -342,7 +347,7 @@ yesBtn.addEventListener('click', () => {
   }
 
   function checkAssets() {
-    const imgs = ['background.jpg','pink.jpg','letter.png','hand.png','cat.jpg','wine.png','tulip.png','chocolate.png'];
+    const imgs = ['letter.png','hand.png','cat.jpg','wine.png','tulip.png','chocolate.png'];
     const missing = [];
     if (!imgs.length) { applyAssetFallbacks(missing); return; }
     let remaining = imgs.length;
