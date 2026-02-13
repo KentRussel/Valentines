@@ -19,12 +19,11 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: 'Montserrat', sans-serif;
-    /* light brown — crumpled old-paper look (CSS gradient) */
     background-image: 
       linear-gradient(135deg, #f6efe6 0%, #ead8c0 40%, #d6bfa0 100%),
       radial-gradient(circle at 10% 10%, rgba(0,0,0,0.02), transparent 10%),
       radial-gradient(circle at 90% 80%, rgba(0,0,0,0.02), transparent 10%);
-    background-color: #ead8c0; /* fallback */
+    background-color: #ead8c0; 
     background-attachment: fixed;
     background-size: cover;
     display: flex;
@@ -81,9 +80,8 @@ button {
     display: none;
     position: fixed;
     inset: 0;
-    /* replace pink.jpg with the previous pink gradient */
     background-image: linear-gradient(135deg, #fb6f92 0%, #ff8fab 100%);
-    background-color: #ffd6e0; /* fallback */
+    background-color: #ffd6e0; 
     background-size: cover;
     z-index: 1000;
     overflow: hidden;
@@ -112,7 +110,7 @@ button {
     100% { transform: translateY(125vh) rotate(360deg); }
 }
 
-/* Proposal text */
+/* Proposal text - UPDATED TO BLACK */
 #proposalText {
     position: fixed;
     top: 8%;
@@ -120,8 +118,8 @@ button {
     text-align: center;
     font-family: 'Dancing Script', cursive;
     font-size: clamp(3.5rem, 9vw, 6.5rem);
-    color: white;
-    text-shadow: 0 0 15px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.4);
+    color: #000; /* changed to black */
+    text-shadow: 0 0 15px rgba(255,255,255,0.4); /* adjusted shadow for dark text */
     opacity: 0;
     transform: scale(0.8);
     transition: 1s ease;
@@ -147,12 +145,13 @@ button {
     box-sizing: border-box;
 }
 
+/* Letter text - CONFIRMED BLACK */
 .letter-content {
     width: 80%;
     font-family: 'Indie Flower', cursive;
     text-align: center;
     font-size: 1.4rem;
-    color: #000; /* changed to black */
+    color: #000; 
     font-weight: 600;
 }
 
@@ -161,12 +160,13 @@ button {
 }
 
 #handSketch {
-    height: 90vh;           /* responsive to viewport height */
-    max-height: 972px;      /* cap to preserve your original visual size */
+    height: 90vh;           
+    max-height: 972px;      
     width: auto;
     margin-left: -60px;
 }
 
+/* Hand text - CONFIRMED BLACK */
 .hand-text {
     position: absolute;
     top: 62%;
@@ -174,14 +174,13 @@ button {
     transform: translate(-50%, -50%);
     font-family: 'Indie Flower', cursive;
     font-size: 1rem;
-    color: #000; /* changed to black */
+    color: #000; 
     font-weight: 700;
     width: 60%;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
     line-height: 1.4;
 }
 
-/* Responsive layout for small screens */
 @media (max-width: 900px) {
   .result-container {
     flex-direction: column;
@@ -276,9 +275,7 @@ function spawnRainItem() {
 }
 
 function startRainEffect() {
-    // 5 SECOND DELAY BEFORE THE RAIN BEGINS
     setTimeout(() => {
-        // Continuous rain stream
         setInterval(() => {
             spawnRainItem();
         }, 150); 
@@ -286,27 +283,22 @@ function startRainEffect() {
 }
 
 yesBtn.addEventListener('click', () => {
-    // Reveal instant UI
     result.style.display = 'flex';
     wrapper.style.display = 'none';
     document.getElementById('question').style.display = 'none';
     document.getElementById('catImage').style.display = 'none';
 
-    // "She said YES!" appears immediately
     const text = document.getElementById('proposalText');
     text.style.opacity = '1';
     text.style.transform = 'scale(1)';
 
-    // Play music immediately
     const music = document.getElementById('bgMusic');
     music.volume = 0.3;
     music.play().catch(()=>{});
 
-    // Queue the delayed rain
     startRainEffect();
 });
 
-// --- asset health check & graceful fallbacks ---
 (function () {
   function applyAssetFallbacks(missing) {
     if (missing.includes('background.jpg')) {
@@ -326,8 +318,8 @@ yesBtn.addEventListener('click', () => {
       if (hand && handArea) {
         hand.remove();
         const placeholder = document.createElement('div');
-        placeholder.style.width = '972px';
-        placeholder.style.height = '972px';
+        placeholder.style.width = '300px';
+        placeholder.style.height = '400px';
         placeholder.style.background = '#f4e7e0';
         placeholder.style.borderRadius = '8px';
         placeholder.style.display = 'flex';
@@ -336,20 +328,15 @@ yesBtn.addEventListener('click', () => {
         placeholder.style.color = '#000';
         placeholder.style.fontFamily = "'Indie Flower', cursive";
         placeholder.style.fontSize = '1.1rem';
-        placeholder.textContent = '— hand image unavailable —';
+        placeholder.textContent = '— hand image —';
         handArea.appendChild(placeholder);
       }
     }
-
-    // enforce readable letter text color if backgrounds fail
-    const lc = document.querySelector('.letter-content');
-    if (lc) lc.style.color = '#000';
   }
 
   function checkAssets() {
     const imgs = ['letter.png','hand.png','cat.jpg','wine.png','tulip.png','chocolate.png'];
     const missing = [];
-    if (!imgs.length) { applyAssetFallbacks(missing); return; }
     let remaining = imgs.length;
 
     imgs.forEach(src => {
@@ -359,10 +346,8 @@ yesBtn.addEventListener('click', () => {
       img.src = src;
     });
   }
-
   document.addEventListener('DOMContentLoaded', checkAssets);
 })();
-
 </script>
 
 </body>
