@@ -152,7 +152,7 @@ button {
     font-family: 'Indie Flower', cursive;
     text-align: center;
     font-size: 1.4rem;
-    color: #3d2817;
+    color: #000; /* changed to black */
     font-weight: 600;
 }
 
@@ -174,7 +174,7 @@ button {
     transform: translate(-50%, -50%);
     font-family: 'Indie Flower', cursive;
     font-size: 1rem;
-    color: #3d2817;
+    color: #000; /* changed to black */
     font-weight: 700;
     width: 60%;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -333,7 +333,7 @@ yesBtn.addEventListener('click', () => {
         placeholder.style.display = 'flex';
         placeholder.style.alignItems = 'center';
         placeholder.style.justifyContent = 'center';
-        placeholder.style.color = '#3d2817';
+        placeholder.style.color = '#000';
         placeholder.style.fontFamily = "'Indie Flower', cursive";
         placeholder.style.fontSize = '1.1rem';
         placeholder.textContent = '— hand image unavailable —';
@@ -343,7 +343,7 @@ yesBtn.addEventListener('click', () => {
 
     // enforce readable letter text color if backgrounds fail
     const lc = document.querySelector('.letter-content');
-    if (lc) lc.style.color = '#3d2817';
+    if (lc) lc.style.color = '#000';
   }
 
   function checkAssets() {
