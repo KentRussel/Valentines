@@ -134,6 +134,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .letter-content {
@@ -150,7 +151,9 @@ button {
 }
 
 #handSketch {
-    height: 90vh;
+    height: 90vh;           /* responsive to viewport height */
+    max-height: 972px;      /* cap to preserve your original visual size */
+    width: auto;
     margin-left: -60px;
 }
 
@@ -166,6 +169,19 @@ button {
     width: 60%;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     line-height: 1.4;
+}
+
+/* Responsive layout for small screens */
+@media (max-width: 900px) {
+  .result-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px 0;
+  }
+  #proposalText { font-size: clamp(2rem, 8vw, 4rem); top: 6%; }
+  .hand-text { position: static; transform: none; width: 85%; margin-top: 12px; text-align: center; }
+  .letter-wrapper { order: 1; }
+  .hand-area { order: 2; }
 }
 </style>
 </head>
