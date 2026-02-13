@@ -19,11 +19,14 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: 'Montserrat', sans-serif;
+    /* image first, but provide a safe color fallback */
     background: url('background.jpg') center/cover no-repeat fixed;
+    background-color: #ffeef6; /* fallback if background.jpg fails */
+    background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+} 
 
 /* Question */
 h1 {
@@ -75,11 +78,13 @@ button {
     position: fixed;
     inset: 0;
     background: url('pink.jpg') center/cover no-repeat fixed;
+    background-color: #ffd6e0; /* fallback if pink.jpg fails to load */
+    background-size: cover;
     z-index: 1000;
     overflow: hidden;
     justify-content: center;
     align-items: center;
-}
+} 
 
 #cinematic-bg {
     position: fixed;
@@ -295,6 +300,64 @@ yesBtn.addEventListener('click', () => {
     // Queue the delayed rain
     startRainEffect();
 });
+
+// --- asset health check & graceful fallbacks ---
+(function () {
+  function applyAssetFallbacks(missing) {
+    if (missing.includes('background.jpg')) {
+      document.body.style.backgroundImage = 'linear-gradient(135deg,#ffeef6,#ffffff)';
+    }
+    if (missing.includes('pink.jpg')) {
+      const r = document.getElementById('result');
+      if (r) { r.style.backgroundImage = 'none'; r.style.backgroundColor = '#ffd6e0'; }
+    }
+    if (missing.includes('letter.png')) {
+      const lw = document.querySelector('.letter-wrapper');
+      if (lw) { lw.style.backgroundImage = 'none'; lw.style.backgroundColor = '#fffaf2'; lw.style.border = '1px solid rgba(0,0,0,0.05)'; }
+    }
+    if (missing.includes('hand.png')) {
+      const hand = document.getElementById('handSketch');
+      const handArea = document.querySelector('.hand-area');
+      if (hand && handArea) {
+        hand.remove();
+        const placeholder = document.createElement('div');
+        placeholder.style.width = '972px';
+        placeholder.style.height = '972px';
+        placeholder.style.background = '#f4e7e0';
+        placeholder.style.borderRadius = '8px';
+        placeholder.style.display = 'flex';
+        placeholder.style.alignItems = 'center';
+        placeholder.style.justifyContent = 'center';
+        placeholder.style.color = '#3d2817';
+        placeholder.style.fontFamily = "'Indie Flower', cursive";
+        placeholder.style.fontSize = '1.1rem';
+        placeholder.textContent = '— hand image unavailable —';
+        handArea.appendChild(placeholder);
+      }
+    }
+
+    // enforce readable letter text color if backgrounds fail
+    const lc = document.querySelector('.letter-content');
+    if (lc) lc.style.color = '#3d2817';
+  }
+
+  function checkAssets() {
+    const imgs = ['background.jpg','pink.jpg','letter.png','hand.png','cat.jpg','wine.png','tulip.png','chocolate.png'];
+    const missing = [];
+    if (!imgs.length) { applyAssetFallbacks(missing); return; }
+    let remaining = imgs.length;
+
+    imgs.forEach(src => {
+      const img = new Image();
+      img.onload = () => { if (--remaining === 0) applyAssetFallbacks(missing); };
+      img.onerror = () => { missing.push(src); if (--remaining === 0) applyAssetFallbacks(missing); };
+      img.src = src;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', checkAssets);
+})();
+
 </script>
 
 </body>
