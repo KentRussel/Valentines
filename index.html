@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will you be my gf?</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Indie+Flower&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --dark-pink: #fb6f92;
+}
+
+/* Base */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    background: url('background.jpg') center/cover no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Question */
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3rem, 8vw, 5rem);
+    color: var(--dark-pink);
+    margin-top: 12vh;
+    text-align: center;
+    z-index: 10;
+}
+
+#catImage {
+    width: 260px;
+    margin: 20px 0;
+    z-index: 10;
+}
+
+/* Buttons */
+.btn-wrapper {
+    display: flex;
+    gap: 20px;
+    z-index: 20;
+}
+
+button {
+    padding: 18px 50px;
+    font-size: 1.4rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+}
+
+#yesBtn {
+    background: linear-gradient(45deg, #fb6f92, #ff8fab);
+    color: white;
+    transition: transform 0.3s;
+}
+
+#noBtn {
+    background: white;
+    color: #fb6f92;
+    border: 2px solid #fb6f92;
+}
+
+/* RESULT SCREEN */
+#result {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: url('pink.jpg') center/cover no-repeat fixed;
+    z-index: 1000;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+#cinematic-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* RAIN EFFECT */
+.rain-item {
+    position: absolute;
+    top: -15vh;
+    pointer-events: none;
+    opacity: 0.85;
+    will-change: transform;
+}
+
+@keyframes rainDown {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(125vh) rotate(360deg); }
+}
+
+/* Proposal text */
+#proposalText {
+    position: fixed;
+    top: 8%;
+    width: 100%;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
+    color: white;
+    text-shadow: 0 0 15px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 1s ease;
+    z-index: 2000;
+}
+
+/* Container */
+.result-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    z-index: 1002;
+}
+
+.letter-wrapper {
+    width: 900px;
+    height: 1100px;
+    background: url('letter.png') center/contain no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.letter-content {
+    width: 80%;
+    font-family: 'Indie Flower', cursive;
+    text-align: center;
+    font-size: 1.4rem;
+    color: #3d2817;
+    font-weight: 600;
+}
+
+.hand-area {
+    position: relative;
+}
+
+#handSketch {
+    height: 90vh;
+    margin-left: -60px;
+}
+
+.hand-text {
+    position: absolute;
+    top: 62%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    font-family: 'Indie Flower', cursive;
+    font-size: 1rem;
+    color: #3d2817;
+    font-weight: 700;
+    width: 60%;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    line-height: 1.4;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="question">Ezra, Will you be my Valentine?</h1>
+<img id="catImage" src="cat.jpg">
+
+<div class="btn-wrapper" id="btnWrapper">
+    <button id="yesBtn">YES ✨</button>
+    <button id="noBtn">No ☹️</button>
+</div>
+
+<div id="result">
+    <div id="cinematic-bg"></div>
+    <div id="proposalText">She said YES!</div>
+
+    <div class="result-container">
+        <div class="letter-wrapper">
+            <div class="letter-content">
+                Better than Biscoff, sweeter than a Spanish Latte<br><br>
+                You make my heart do a little happy dance<br><br>
+                Happy Valentine's Day to my favorite person<br><br>
+                XOXO
+            </div>
+        </div>
+
+        <div class="hand-area">
+            <img src="hand.png" id="handSketch">
+            <div class="hand-text">
+                Hold my hand—this is the exact size of my heart in your palm.
+                Exactly as it is—waiting for yours.
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const result = document.getElementById('result');
+const wrapper = document.getElementById('btnWrapper');
+const cinematicBg = document.getElementById('cinematic-bg');
+
+let yesScale = 1;
+
+function moveNo() {
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+    yesScale += 0.03;
+    yesBtn.style.transform = `scale(${yesScale})`;
+}
+noBtn.addEventListener('mouseenter', moveNo);
+
+function spawnRainItem() {
+    const el = document.createElement('div');
+    el.className = 'rain-item';
+    
+    const types = ['heart', 'wine', 'tulip', 'choco'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    
+    el.style.left = Math.random() * 100 + 'vw';
+    const size = Math.random() * 50 + 60; 
+    const duration = Math.random() * 4 + 5; 
+
+    if (type === 'heart') el.innerHTML = '🤍';
+    else if (type === 'wine') el.innerHTML = `<img src="wine.png" style="width:${size}px;">`;
+    else if (type === 'tulip') el.innerHTML = `<img src="tulip.png" style="width:${size}px;">`;
+    else if (type === 'choco') el.innerHTML = `<img src="chocolate.png" style="width:${size}px;">`;
+
+    el.style.fontSize = size + 'px';
+    el.style.animation = `rainDown ${duration}s linear forwards`;
+    
+    cinematicBg.appendChild(el);
+    setTimeout(() => { el.remove(); }, duration * 1000);
+}
+
+function startRainEffect() {
+    // 5 SECOND DELAY BEFORE THE RAIN BEGINS
+    setTimeout(() => {
+        // Continuous rain stream
+        setInterval(() => {
+            spawnRainItem();
+        }, 150); 
+    }, 5000);
+}
+
+yesBtn.addEventListener('click', () => {
+    // Reveal instant UI
+    result.style.display = 'flex';
+    wrapper.style.display = 'none';
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('catImage').style.display = 'none';
+
+    // "She said YES!" appears immediately
+    const text = document.getElementById('proposalText');
+    text.style.opacity = '1';
+    text.style.transform = 'scale(1)';
+
+    // Play music immediately
+    const music = document.getElementById('bgMusic');
+    music.volume = 0.3;
+    music.play().catch(()=>{});
+
+    // Queue the delayed rain
+    startRainEffect();
+});
+</script>
+
+</body>
+</html>
